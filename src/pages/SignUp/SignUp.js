@@ -1,16 +1,38 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useForm, useHistory } from "react-hook-form";
+import { signUp } from "../../services/API";
 
 export default function SignUp() {
   const { register, handleSubmit, errors } = useForm();
+  const history = useHistory();
+
+  const onSubmit = (data) => {
+    const { name, email, password } = data;
+
+    const body = {
+      name,
+      email,
+      password,
+    };
+
+    signUp({ body })
+      .then(() => {
+        history.push("/");
+      })
+      .catch((err) => {
+        if (err.response.status === 409) {
+          alert("Email já está em uso!");
+        }
+      });
+  };
 
   return (
     <RegisterContainer>
       <h1>
         Bem vindo ao <bold>GratiBox</bold>
       </h1>
-      <form onSubmit={handleSubmit()}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <input
           type="text"
           placeholder="Nome"
