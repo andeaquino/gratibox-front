@@ -3,47 +3,40 @@ import Loader from "react-loader-spinner";
 import { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { signUp } from "../../services/API";
+import { signIn } from "../../services/API";
 
-export default function SignUp() {
+export default function Login() {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [passError, setPassError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
   const onSubmit = (data) => {
-    const { name, email, password, confirmPass } = data;
+    const { email, password } = data;
 
-    if (password !== confirmPass) {
-      setPassError(true);
-      return;
-    }
-
-    setEmailError(false);
-    setPassError(false);
+    setError(false);
     setLoading(true);
 
     const body = {
-      name,
       email,
       password,
     };
 
-    signUp({ body })
-      .then(() => {
+    signIn({ body })
+      .then((res) => {
+        const user = JSON.stringify(res.data);
+        localStorage.setItem("user", user);
+
         setLoading(false);
-        history.push("/login");
+        history.push("/planos");
       })
-      .catch((err) => {
+      .catch(() => {
         setLoading(false);
-        if (err.response.status === 409) {
-          setEmailError(true);
-        }
+        setError(true);
       });
   };
 
@@ -54,18 +47,12 @@ export default function SignUp() {
       </h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <input
-          type="text"
-          placeholder="Nome"
-          {...register("name", { required: "Campo não pode estar vazio" })}
-        />
-        {errors?.name && <p>{errors.name?.message}</p>}
-        <input
           type="email"
           placeholder="Email"
           {...register("email", { required: "Campo não pode estar vazio" })}
         />
-        {emailError ? <p>Email já está em uso</p> : ""}
         {errors?.email && <p>{errors.email?.message}</p>}
+
         <input
           type="password"
           placeholder="Senha"
@@ -78,24 +65,16 @@ export default function SignUp() {
           })}
         />
         {errors?.password && <p>{errors.password?.message}</p>}
-        <input
-          type="password"
-          placeholder="Confirmar senha"
-          {...register("confirmPass", {
-            required: "Campo não pode estar vazio",
-          })}
-        />
-        {passError ? <p>Senhas não combinam</p> : ""}
-        {errors?.confirmPass && <p>{errors.confirmPass?.message}</p>}
+        {error ? <h2>Email ou senha inválidos</h2> : ""}
         <button type="submit">
           {loading ? (
             <Loader type="ThreeDots" color="#FFFFFF" height={13} width={51} />
           ) : (
-            "Cadastrar"
+            "Login"
           )}
         </button>
       </form>
-      <Link to="/login">Já é grato? Entre agora!</Link>
+      <Link to="/cadastro">Ainda não sou grato</Link>
     </RegisterContainer>
   );
 }
@@ -105,6 +84,7 @@ const RegisterContainer = styled.div`
   margin-top: calc(50vh - 231px);
   padding: 0 25px;
   font-family: "Roboto", sans-serif;
+
   h1 {
     font-size: 28px;
     color: #ffffff;
@@ -112,6 +92,13 @@ const RegisterContainer = styled.div`
     margin-bottom: 40px;
     text-align: center;
     font-weight: 500;
+  }
+
+  h2 {
+    font-size: 20px;
+    color: orangered;
+    font-weight: 500;
+    text-align: center;
   }
 
   p {
@@ -144,7 +131,7 @@ const RegisterContainer = styled.div`
     display: block;
     width: 60vw;
     height: 56px;
-    margin: 60px auto 0;
+    margin: 160px auto 0;
     background-color: #8c97ea;
     border-radius: 10px;
     color: #ffffff;
