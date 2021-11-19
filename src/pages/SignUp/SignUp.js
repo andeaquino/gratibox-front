@@ -1,14 +1,19 @@
 import styled from "styled-components";
+import Loader from "react-loader-spinner";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm, useHistory } from "react-hook-form";
 import { signUp } from "../../services/API";
 
 export default function SignUp() {
   const { register, handleSubmit, errors } = useForm();
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
 
   const onSubmit = (data) => {
     const { name, email, password } = data;
+
+    setLoading(true);
 
     const body = {
       name,
@@ -18,9 +23,11 @@ export default function SignUp() {
 
     signUp({ body })
       .then(() => {
-        history.push("/");
+        setLoading(false);
+        history.push("/login");
       })
       .catch((err) => {
+        setLoading(false);
         if (err.response.status === 409) {
           alert("Email já está em uso!");
         }
@@ -28,7 +35,7 @@ export default function SignUp() {
   };
 
   return (
-    <RegisterContainer>
+    <RegisterContainer loading={loading}>
       <h1>
         Bem vindo ao <bold>GratiBox</bold>
       </h1>
