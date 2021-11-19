@@ -7,12 +7,21 @@ import { signUp } from "../../services/API";
 
 export default function SignUp() {
   const { register, handleSubmit, errors } = useForm();
+  const [passError, setPassError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
   const onSubmit = (data) => {
-    const { name, email, password } = data;
+    const { name, email, password, confirmPass } = data;
 
+    if (password !== confirmPass) {
+      setPassError(true);
+      return;
+    }
+
+    setEmailError(false);
+    setPassError(false);
     setLoading(true);
 
     const body = {
@@ -29,7 +38,7 @@ export default function SignUp() {
       .catch((err) => {
         setLoading(false);
         if (err.response.status === 409) {
-          alert("Email já está em uso!");
+          setEmailError(true);
         }
       });
   };
@@ -50,17 +59,32 @@ export default function SignUp() {
           placeholder="Email"
           {...register("email", { required: true })}
         />
+        {emailError ? <p>Email já está em uso</p> : ""}
         <input
           type="password"
           placeholder="Senha"
-          {...register("password", { required: true })}
+          {...register("password", {
+            required: "Você deve digitar uma senha",
+            minLength: {
+              value: 8,
+              message: "Senha deve ter pelo menos 8 caracteres",
+            },
+          })}
         />
+        {errors.password && <p>{errors.password.message}</p>}
         <input
           type="password"
           placeholder="Confirmar senha"
           {...register("confirmPass", { required: true })}
         />
-        <button type="submit">Cadastrar</button>
+        {passError ? <p>Senhas não combinam</p> : ""}
+        <button type="submit">
+          {loading ? (
+            <Loader type="ThreeDots" color="#FFFFFF" height={13} width={51} />
+          ) : (
+            "Cadastrar"
+          )}
+        </button>
       </form>
       <Link to="/login">Já é grato? Entre agora!</Link>
     </RegisterContainer>
