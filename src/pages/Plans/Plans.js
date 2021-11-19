@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import weekImg from "../../assets/semanal.jpg";
 import monthImg from "../../assets/mensal.jpg";
+import { Link } from "react-router-dom";
 
 export default function Plans() {
   return (
@@ -11,13 +12,17 @@ export default function Plans() {
         <img src={weekImg} alt="Meditação semanal" />
         <p>Você recebe um box por semana.</p>
         <p>Ideal para quem quer exercer a gratidão todos os dias.</p>
-        <button>Assinar</button>
+        <Link to="/assinar">
+          <button>Assinar</button>
+        </Link>
       </PlanBox>
       <PlanBox>
         <img src={monthImg} alt="Meditação mensal" />
         <p>Você recebe um box por mês.</p>
         <p>Ideal para quem está começando agora.</p>
-        <button>Assinar</button>
+        <Link to="/assinar">
+          <button>Assinar</button>
+        </Link>
       </PlanBox>
     </PlansContainer>
   );
