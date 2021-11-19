@@ -3,6 +3,7 @@ import GlobalStyle from "./shared/GlobalStyle";
 import SignUp from "./pages/SignUp/SignUp";
 import Login from "./pages/Login/Login";
 import Home from "./pages/Home/Home";
+import Plans from "./pages/Plans/Plans";
 
 function App() {
   return (
@@ -17,6 +18,9 @@ function App() {
         </Route>
         <Route exact path="/cadastro">
           <SignUp />
+        </Route>
+        <Route exact path="/planos">
+          <Plans />
         </Route>
       </Switch>
     </BrowserRouter>
