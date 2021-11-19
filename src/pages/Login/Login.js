@@ -23,15 +23,16 @@ export default function Login() {
     };
 
     signIn({ body })
-      .then(() => {
+      .then((res) => {
+        const user = JSON.stringify(res.data);
+        localStorage.setItem("user", user);
+
         setLoading(false);
         history.push("/planos");
       })
-      .catch((err) => {
+      .catch(() => {
         setLoading(false);
-        if (err.response.status === 409) {
-          setError(true);
-        }
+        setError(true);
       });
   };
 
