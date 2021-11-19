@@ -52,7 +52,7 @@ export default function Login() {
           {...register("email", { required: "Campo não pode estar vazio" })}
         />
         {errors?.email && <p>{errors.email?.message}</p>}
-        {error ? <p>Email ou senha inválidos</p> : ""}
+
         <input
           type="password"
           placeholder="Senha"
@@ -65,6 +65,7 @@ export default function Login() {
           })}
         />
         {errors?.password && <p>{errors.password?.message}</p>}
+        {error ? <h2>Email ou senha inválidos</h2> : ""}
         <button type="submit">
           {loading ? (
             <Loader type="ThreeDots" color="#FFFFFF" height={13} width={51} />
@@ -83,6 +84,7 @@ const RegisterContainer = styled.div`
   margin-top: calc(50vh - 231px);
   padding: 0 25px;
   font-family: "Roboto", sans-serif;
+
   h1 {
     font-size: 28px;
     color: #ffffff;
@@ -92,7 +94,16 @@ const RegisterContainer = styled.div`
     font-weight: 500;
   }
 
+  h2 {
+    font-size: 20px;
+    color: orangered;
+    font-weight: 500;
+    text-align: center;
+  }
+
   p {
+    margin-top: -8px;
+    margin-bottom: 5px;
     padding-left: 5px;
     color: orangered;
   }
