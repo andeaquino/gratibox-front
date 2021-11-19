@@ -25,7 +25,7 @@ export default function Login() {
     signIn({ body })
       .then(() => {
         setLoading(false);
-        history.push("/login");
+        history.push("/planos");
       })
       .catch((err) => {
         setLoading(false);
