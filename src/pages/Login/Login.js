@@ -6,7 +6,11 @@ import { useForm } from "react-hook-form";
 import { signIn } from "../../services/API";
 
 export default function Login() {
-  const { register, handleSubmit, errors } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const history = useHistory();
@@ -45,13 +49,15 @@ export default function Login() {
         <input
           type="email"
           placeholder="Email"
-          {...register("email", { required: true })}
+          {...register("email", { required: "Campo não pode estar vazio" })}
         />
+        {errors?.email && <p>{errors.email?.message}</p>}
+        {error ? <p>Email ou senha inválidos</p> : ""}
         <input
           type="password"
           placeholder="Senha"
           {...register("password", {
-            required: "Você deve digitar uma senha",
+            required: "Campo não pode estar vazio",
             minLength: {
               value: 8,
               message: "Senha deve ter pelo menos 8 caracteres",

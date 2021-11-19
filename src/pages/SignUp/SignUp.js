@@ -6,7 +6,11 @@ import { useForm } from "react-hook-form";
 import { signUp } from "../../services/API";
 
 export default function SignUp() {
-  const { register, handleSubmit, errors } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [passError, setPassError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -52,19 +56,21 @@ export default function SignUp() {
         <input
           type="text"
           placeholder="Nome"
-          {...register("name", { required: true })}
+          {...register("name", { required: "Campo não pode estar vazio" })}
         />
+        {errors?.name && <p>{errors.name?.message}</p>}
         <input
           type="email"
           placeholder="Email"
-          {...register("email", { required: true })}
+          {...register("email", { required: "Campo não pode estar vazio" })}
         />
         {emailError ? <p>Email já está em uso</p> : ""}
+        {errors?.email && <p>{errors.email?.message}</p>}
         <input
           type="password"
           placeholder="Senha"
           {...register("password", {
-            required: "Você deve digitar uma senha",
+            required: "Campo não pode estar vazio",
             minLength: {
               value: 8,
               message: "Senha deve ter pelo menos 8 caracteres",
@@ -75,9 +81,12 @@ export default function SignUp() {
         <input
           type="password"
           placeholder="Confirmar senha"
-          {...register("confirmPass", { required: true })}
+          {...register("confirmPass", {
+            required: "Campo não pode estar vazio",
+          })}
         />
         {passError ? <p>Senhas não combinam</p> : ""}
+        {errors?.confirmPass && <p>{errors.confirmPass?.message}</p>}
         <button type="submit">
           {loading ? (
             <Loader type="ThreeDots" color="#FFFFFF" height={13} width={51} />
@@ -106,6 +115,8 @@ const RegisterContainer = styled.div`
   }
 
   p {
+    margin-top: -8px;
+    margin-bottom: 5px;
     padding-left: 5px;
     color: orangered;
   }
