@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import Loader from "react-loader-spinner";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { signIn } from "../../services/API";
+import { UserContext } from "../../contexts/UserContext";
 
 export default function Login() {
   const {
@@ -13,6 +14,7 @@ export default function Login() {
   } = useForm();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { setUserInfo } = useContext(UserContext);
   const history = useHistory();
 
   const onSubmit = (data) => {
@@ -30,6 +32,7 @@ export default function Login() {
       .then((res) => {
         const user = JSON.stringify(res.data);
         localStorage.setItem("user", user);
+        setUserInfo(res.data);
 
         setLoading(false);
         history.push("/planos");

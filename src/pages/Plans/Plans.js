@@ -2,11 +2,15 @@ import styled from "styled-components";
 import weekImg from "../../assets/semanal.jpg";
 import monthImg from "../../assets/mensal.jpg";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
 
 export default function Plans() {
+  const { userInfo } = useContext(UserContext);
+
   return (
     <PlansContainer>
-      <h1>Bom te ver por aqui, Ande.</h1>
+      <h1>Bom te ver por aqui, {userInfo.name}.</h1>
       <h2>Você ainda não assinou um plano, que tal começar agora?</h2>
       <PlanBox>
         <img src={weekImg} alt="Meditação semanal" />

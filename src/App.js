@@ -1,4 +1,4 @@
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { useState } from "react";
 import { UserContext } from "./contexts/UserContext";
 import GlobalStyle from "./shared/GlobalStyle";
@@ -18,16 +18,16 @@ function App() {
         <GlobalStyle />
         <Switch>
           <Route exact path="/">
-            <Home />
+            {userInfo ? <Redirect to="/planos" /> : <Home />}
           </Route>
           <Route exact path="/login">
-            <Login />
+            {userInfo ? <Redirect to="/planos" /> : <Login />}
           </Route>
           <Route exact path="/cadastro">
-            <SignUp />
+            {userInfo ? <Redirect to="/planos" /> : <SignUp />}
           </Route>
           <Route exact path="/planos">
-            <Plans />
+            {userInfo ? <Plans /> : <Redirect to="/" />}
           </Route>
         </Switch>
       </UserContext.Provider>
