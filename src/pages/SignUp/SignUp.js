@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import Loader from "react-loader-spinner";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useForm, useHistory } from "react-hook-form";
+import { Link, useHistory } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { signUp } from "../../services/API";
 
 export default function SignUp() {
@@ -71,7 +71,7 @@ export default function SignUp() {
             },
           })}
         />
-        {errors.password && <p>{errors.password.message}</p>}
+        {errors?.password && <p>{errors.password?.message}</p>}
         <input
           type="password"
           placeholder="Confirmar senha"
@@ -103,6 +103,11 @@ const RegisterContainer = styled.div`
     margin-bottom: 40px;
     text-align: center;
     font-weight: 500;
+  }
+
+  p {
+    padding-left: 5px;
+    color: orangered;
   }
 
   input {
