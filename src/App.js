@@ -6,6 +6,7 @@ import SignUp from "./pages/SignUp/SignUp";
 import Login from "./pages/Login/Login";
 import Home from "./pages/Home/Home";
 import Plans from "./pages/Plans/Plans";
+import Subscribe from "./pages/Subscribe/Subscribe";
 
 function App() {
   const [userInfo, setUserInfo] = useState(
@@ -28,6 +29,9 @@ function App() {
           </Route>
           <Route exact path="/planos">
             {userInfo ? <Plans /> : <Redirect to="/" />}
+          </Route>
+          <Route exact path="/assinar">
+            {userInfo ? <Subscribe /> : <Redirect to="/" />}
           </Route>
         </Switch>
       </UserContext.Provider>
