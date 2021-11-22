@@ -3,25 +3,38 @@ import weekImg from "../../assets/semanal.jpg";
 import monthImg from "../../assets/mensal.jpg";
 import planImg from "../../assets/plano.jpg";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "../../contexts/UserContext";
-import dayjs from "dayjs";
 import { calculateDeliveryDates } from "../../services/calculateDeliveryDates";
+import { useState } from "react";
+import { listPlan } from "../../services/API";
 
 export default function Plans() {
   const { userInfo } = useContext(UserContext);
-  const plan = {
-    planType: "mensal",
-    planDate: "20",
-    product: ["chas", "incenso", "teste ddsdsdsds"],
-    date: "21/11/21",
+  const [plan, setPlan] = useState(null);
+  const [deliveryDates, setDeliveryDates] = useState(null);
+
+  const loadPlan = () => {
+    listPlan({ token: userInfo.token })
+      .then((res) => {
+        setPlan(res.data);
+        setDeliveryDates(
+          calculateDeliveryDates(res.data.planType, res.data.planDate)
+        );
+      })
+      .catch((err) => {
+        if (err.response.status === 500) {
+          alert("Não foi possível carregar o plano");
+        }
+      });
   };
-  const deliveryDates = calculateDeliveryDates(plan.planType, plan.planDate);
+
+  useEffect(loadPlan, []);
 
   return (
     <PlansContainer>
       <h1>Bom te ver por aqui, {userInfo.name}.</h1>
-      {true ? (
+      {plan ? (
         <>
           <h2>"Agradecer é a arte de atrair coisas boas"</h2>
           <PlanBox>
