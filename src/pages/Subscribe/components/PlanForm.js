@@ -3,7 +3,7 @@ import styled from "styled-components";
 export default function PlanForm({ subscription, toggleInput }) {
   return (
     <>
-      <form>
+      <StyledPlanForm>
         <h3>Plano</h3>
         <Boxes>
           <div>
@@ -23,9 +23,9 @@ export default function PlanForm({ subscription, toggleInput }) {
             <span>Mensal</span>
           </div>
         </Boxes>
-      </form>
+      </StyledPlanForm>
 
-      <form>
+      <StyledPlanForm>
         <h3>Entrega</h3>
         {subscription.planType ? (
           subscription.planType === 1 ? (
@@ -86,9 +86,9 @@ export default function PlanForm({ subscription, toggleInput }) {
         ) : (
           <h4>Selecione um plano</h4>
         )}
-      </form>
+      </StyledPlanForm>
 
-      <form>
+      <StyledPlanForm>
         <h3>Quero receber</h3>
         <Boxes>
           <div>
@@ -116,10 +116,32 @@ export default function PlanForm({ subscription, toggleInput }) {
             <span>Produtos organicos</span>
           </div>
         </Boxes>
-      </form>
+      </StyledPlanForm>
     </>
   );
 }
+
+const StyledPlanForm = styled.form`
+  width: 100%;
+  padding: 0 15px;
+  border-radius: 5px;
+  background-color: rgba(224, 209, 237, 0.62);
+  margin-bottom: 8px;
+
+  input {
+    min-width: 20px;
+    min-height: 20px;
+  }
+
+  h4 {
+    font-size: 17px;
+    font-weight: 500;
+    font-family: "Roboto", sans-serif;
+    color: #4d65a8;
+    padding: 8px 0;
+    text-align: center;
+  }
+`;
 
 const Boxes = styled.div`
   display: grid;
