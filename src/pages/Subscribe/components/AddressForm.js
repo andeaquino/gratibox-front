@@ -18,7 +18,7 @@ export default function AddressForm({
       />
       <input
         type="text"
-        placeholder="Endeeço de entrega"
+        placeholder="Endereço de entrega"
         onChange={(e) =>
           setSubscription({ ...subscription, address: e.target.value })
         }

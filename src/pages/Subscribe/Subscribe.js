@@ -4,6 +4,9 @@ import { useContext, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import PlanForm from "./components/PlanForm";
 import AddressForm from "./components/AddressForm";
+import { postPlan } from "../../services/API";
+import { useHistory } from "react-router";
+import Loader from "react-loader-spinner";
 
 export default function Subscribe() {
   const { userInfo } = useContext(UserContext);
@@ -17,7 +20,9 @@ export default function Subscribe() {
     city: "",
     state: "",
   });
-  const [inputAddress, setInputAddress] = useState(true);
+  const [inputAddress, setInputAddress] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const history = useHistory();
 
   const toggleInput = (type, value) => {
     if (type === "plano") {
@@ -45,7 +50,18 @@ export default function Subscribe() {
     setInputAddress(true);
   };
 
-  const submitSubscription = () => {};
+  const submitSubscription = () => {
+    setLoading(true);
+    postPlan({ body: subscription, token: userInfo.token })
+      .then((res) => {
+        setLoading(false);
+        history.push("/planos");
+      })
+      .catch((err) => {
+        setLoading(false);
+        alert("Erro ao assinar o plano");
+      });
+  };
 
   return (
     <PlansContainer>
@@ -73,8 +89,13 @@ export default function Subscribe() {
             !!subscription.state
           }
           onClick={submitSubscription}
+          loading={loading}
         >
-          Finalizar
+          {loading ? (
+            <Loader type="ThreeDots" color="#FFFFFF" height={13} width={51} />
+          ) : (
+            "Finalizar"
+          )}
         </NextButton>
       ) : (
         <NextButton
@@ -149,6 +170,7 @@ const NextButton = styled.button`
   font-size: 24px;
   font-family: "Roboto", sans-serif;
   margin-bottom: 8px;
-  opacity: ${({ allChecked }) => (allChecked ? 1 : 0.7)};
-  pointer-events: ${({ allChecked }) => (allChecked ? "all" : "none")};
+  opacity: ${({ allChecked, loading }) => (allChecked && !loading ? 1 : 0.7)};
+  pointer-events: ${({ allChecked, loading }) =>
+    allChecked && !loading ? "all" : "none"};
 `;
