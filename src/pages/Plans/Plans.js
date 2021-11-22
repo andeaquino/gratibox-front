@@ -1,7 +1,9 @@
 import styled from "styled-components";
+import dayjs from "dayjs";
 import weekImg from "../../assets/semanal.jpg";
 import monthImg from "../../assets/mensal.jpg";
 import planImg from "../../assets/plano.jpg";
+import Logout from "../../shared/Logout";
 import { Link } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../../contexts/UserContext";
@@ -23,7 +25,7 @@ export default function Plans() {
         );
       })
       .catch((err) => {
-        if (err.response.status === 500) {
+        if (err.response?.status === 500) {
           alert("Não foi possível carregar o plano");
         }
       });
@@ -33,6 +35,7 @@ export default function Plans() {
 
   return (
     <PlansContainer>
+      <Logout />
       <h1>Bom te ver por aqui, {userInfo.name}.</h1>
       {plan ? (
         <>
@@ -43,14 +46,15 @@ export default function Plans() {
               Plano: <span>{plan.planType}</span>
             </p>
             <p>
-              Data da assinatura: <span>{plan.date}</span>
+              Data da assinatura:{" "}
+              <span>{dayjs(plan.date).format("DD/MM/YY")}</span>
             </p>
             <p>Próximas entregas:</p>
-            {deliveryDates.map((date) => (
+            {deliveryDates?.map((date) => (
               <span>{date}</span>
             ))}
             <ul>
-              {plan.product.map((product) => (
+              {plan.product?.map((product) => (
                 <li>{product}</li>
               ))}
             </ul>

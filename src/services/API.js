@@ -10,5 +10,7 @@ const signIn = ({ body }) => axios.post(`${API_URL}/sign-in`, body);
 const signUp = ({ body }) => axios.post(`${API_URL}/sign-up`, body);
 const listPlan = ({ token }) =>
   axios.get(`${API_URL}/plan`, createHeaders(token));
+const postPlan = ({ token, body }) =>
+  axios.post(`${API_URL}/plan`, body, createHeaders(token));
 
-export { signIn, signUp, listPlan };
+export { signIn, signUp, listPlan, postPlan };
