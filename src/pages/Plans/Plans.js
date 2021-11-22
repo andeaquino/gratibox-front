@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import weekImg from "../../assets/semanal.jpg";
 import monthImg from "../../assets/mensal.jpg";
 import planImg from "../../assets/plano.jpg";
+import Logout from "../../shared/Logout";
 import { Link } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../../contexts/UserContext";
@@ -34,6 +35,7 @@ export default function Plans() {
 
   return (
     <PlansContainer>
+      <Logout />
       <h1>Bom te ver por aqui, {userInfo.name}.</h1>
       {plan ? (
         <>

@@ -4,6 +4,7 @@ import { useContext, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import PlanForm from "./components/PlanForm";
 import AddressForm from "./components/AddressForm";
+import Logout from "../../shared/Logout";
 import { postPlan } from "../../services/API";
 import { useHistory } from "react-router";
 import Loader from "react-loader-spinner";
@@ -65,6 +66,7 @@ export default function Subscribe() {
 
   return (
     <PlansContainer>
+      <Logout />
       <h1>Bom te ver por aqui, {userInfo.name}.</h1>
       <h2>"Agradecer é a arte de atrair coisas boas"</h2>
       <PlanBox>
