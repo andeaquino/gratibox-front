@@ -5,9 +5,18 @@ import planImg from "../../assets/plano.jpg";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
+import dayjs from "dayjs";
+import { calculateDeliveryDates } from "../../services/calculateDeliveryDates";
 
 export default function Plans() {
   const { userInfo } = useContext(UserContext);
+  const plan = {
+    planType: "mensal",
+    planDate: "20",
+    product: ["chas", "incenso", "teste ddsdsdsds"],
+    date: "21/11/21",
+  };
+  const deliveryDates = calculateDeliveryDates(plan.planType, plan.planDate);
 
   return (
     <PlansContainer>
@@ -18,19 +27,19 @@ export default function Plans() {
           <PlanBox>
             <img src={planImg} alt="Meditação plano" />
             <p>
-              Plano: <span>mensal</span>
+              Plano: <span>{plan.planType}</span>
             </p>
             <p>
-              Data da assinatura: <span>11/09/21</span>
+              Data da assinatura: <span>{plan.date}</span>
             </p>
             <p>Próximas entregas:</p>
-            <span>20/09/21</span>
-            <span>20/10/21</span>
-            <span>20/11/21</span>
+            {deliveryDates.map((date) => (
+              <span>{date}</span>
+            ))}
             <ul>
-              <li>Chás</li>
-              <li>Produtos organicos</li>
-              <li>Incensos</li>
+              {plan.product.map((product) => (
+                <li>{product}</li>
+              ))}
             </ul>
           </PlanBox>
         </>
@@ -149,7 +158,7 @@ const PlanBox = styled.div`
 
   ul {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     margin-top: 16px;
     font-size: 18px;
     color: #e63c80;
